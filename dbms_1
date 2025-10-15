@@ -1,0 +1,114 @@
+--Implementing a University Database System
+  --Department Table
+CREATE TABLE Department (
+DeptID INT PRIMARY KEY,
+DeptName VARCHAR(15) UNIQUE NOT NULL,
+Location VARCHAR(15)
+);
+-- Faculty Table
+CREATE TABLE Faculty (
+FacultyID INT PRIMARY KEY,
+FacultyName VARCHAR(15) NOT NULL,
+DeptID INT,
+Email VARCHAR(20) UNIQUE,
+FOREIGN KEY (DeptID) REFERENCES Department(DeptID)
+);
+-- Student Table
+CREATE TABLE Student (
+StudentID INT PRIMARY KEY,
+StudentName VARCHAR(15) NOT NULL,
+DOB DATE,
+DeptID INT,
+Email VARCHAR(20) UNIQUE,
+FOREIGN KEY (DeptID) REFERENCES Department(DeptID)
+);
+-- Course Table
+CREATE TABLE Course (
+CourseID INT PRIMARY KEY,
+CourseName VARCHAR(15) NOT NULL,
+DeptID INT,
+Credits INT CHECK (Credits > 0),
+FOREIGN KEY (DeptID) REFERENCES Department(DeptID)
+);
+-- Enrollment Table
+CREATE TABLE Enrollment (
+EnrollmentID INT PRIMARY KEY,
+StudentID INT,
+CourseID INT,
+Semester VARCHAR(10),
+Grade CHAR(2),
+FOREIGN KEY (StudentID) REFERENCES Student(StudentID),
+FOREIGN KEY (CourseID) REFERENCES Course(CourseID)
+);
+
+-- Department Data
+INSERT INTO Department VALUES (1, 'CSE', 'Block A');
+INSERT INTO Department VALUES (2, 'EEE', 'Block B');
+INSERT INTO Department VALUES (3, 'ME', 'Block C');
+-- Faculty Data
+INSERT INTO Faculty VALUES (101, 'Dr. Smith', 1, 'smith@univ.edu');
+INSERT INTO Faculty VALUES (102, 'Dr. Johnson', 2, 'johnson@univ.edu');
+-- Student Data
+INSERT INTO Student VALUES (201, 'Alice', '02-may-10', 1, 'alice@univ.edu');
+INSERT INTO Student VALUES (202, 'Bob', '01-sep-15', 2, 'bob@univ.edu');
+-- Course Data
+INSERT INTO Course VALUES (301, 'Database Sys', 1, 4);
+INSERT INTO Course VALUES (302, 'Circuit Analy', 2, 3);
+-- Enrollment Data
+INSERT INTO Enrollment VALUES (401, 201, 301, 'Sem1', 'A');
+INSERT INTO Enrollment VALUES (402, 202, 302, 'Sem1', 'B+');
+--1. List all students in Computer Science department
+SELECT StudentName
+FROM Student
+JOIN Department ON Student.DeptID = Department.DeptID
+WHERE DeptName = 'Computer Science';
+or
+SELECT StudentName
+FROM Student,Department where Student.DeptID = Department.DeptID
+and DeptName = 'Computer Science';
+or
+SELECT s.StudentName, d.DeptName`
+FROM Student s,Department d where s.DeptID = d.DeptID
+and d.DeptName = 'Computer Science';
+or
+SELECT *
+FROM Student s,Department d where s.DeptID = d.DeptID
+and d.DeptName = 'Computer Science';
+--List courses with faculty names
+SELECT CourseName, FacultyName
+FROM Course
+JOIN Faculty ON Course.DeptID = Faculty.DeptID;
+or
+SELECT c.CourseName, f.FacultyName
+FROM Course c,Faculty f where c.DeptID = f.DeptID;
+--Show student enrollments with grades
+SELECT StudentName, CourseName, Grade
+FROM Enrollment
+JOIN Student ON Enrollment.StudentID = Student.StudentID
+JOIN Course ON Enrollment.CourseID = Course.CourseID;
+Or
+SELECT StudentName, CourseName, Grade
+FROM Enrollment,student,course where
+Enrollment.StudentID = Student.StudentID
+  And Enrollment.CourseID = Course.CourseID;
+Or
+SELECT s.StudentName, c.CourseName, e.Grade
+FROM Enrollment e,student s,course c where
+e.StudentID = S.StudentID
+And E.CourseID = C.CourseID;
+Result:
+--4.Count students in each department
+SELECT DeptName, COUNT(StudentID) AS TotalStudents
+FROM Student
+JOIN Department ON Student.DeptID = Department.DeptID
+GROUP BY DeptName;
+Or
+SELECT DeptName, COUNT(StudentID) AS TotalStudents
+FROM Student,Department where Student.DeptID = Department.DeptID
+GROUP BY DeptName;
+--5. Display all departments with locations
+SELECT DeptID, DeptName,location
+FROM Department;
+--6. Display all faculty members with their department names.
+SELECT FacultyName,DeptName
+FROM Faculty,Department where Faculty.DeptID = Department.DeptID;
