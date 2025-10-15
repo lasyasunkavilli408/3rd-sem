@@ -1,0 +1,17 @@
+import pandas as pd
+data = pd.Series([12, 22, 32, 42, 52])
+print("Pandas Series:")
+print(data)
+py_list=data.tolist()
+print(py_list)
+print("\nType of the converted object:", type(py_list))
+#Output:
+#Pandas Series:
+#0    12
+#1    22
+#2    32
+#3    42
+#4    52
+#dtype: int64
+#[12, 22, 32, 42, 52]
+#Type of the converted object: <class 'list'>
