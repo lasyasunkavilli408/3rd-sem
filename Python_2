@@ -1,0 +1,5 @@
+for i in range(8,90,3):
+
+ print(i,end=" ")
+
+# this helps in printing the numbers from 8 to 90 by addition of 3.
