@@ -1,0 +1,9 @@
+numbers = [10, 45, 2, 99, 105]
+
+largest = max(numbers)
+
+print("Largest number is:", largest)
+
+
+
+# to get the largest number , and the output is :Largest number is: 105
