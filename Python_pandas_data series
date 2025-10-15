@@ -1,0 +1,13 @@
+import pandas as pd
+data = [12, 22, 32, 42, 52]
+Series = pd.Series(data)
+print("one dimensional array-like object(Pandas Series):")
+print(Series)
+#Output:
+#one dimensional array-like object(Pandas Series):
+#0    12
+#1    22
+#2    32
+#3    42
+#4    52
+#dtype: int64
