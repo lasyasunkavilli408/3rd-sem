@@ -1,0 +1,7 @@
+text = "Lasya"
+
+char_list = list(text)
+
+print(char_list) 
+
+# this is the output['L', 'a', 's', 'y', 'a']
